@@ -21,8 +21,11 @@ const styles = StyleSheet.create({
     margin: 0,
     paddingLeft: 10,
   },
+  name: {
+    marginTop: -3,
+  },
   description: {
-    marginTop: 4,
+    marginTop: 6,
   },
   languageRow: {
     flexDirection: "row",
@@ -41,7 +44,7 @@ const RepositoryItem = ({ item }) => {
       <View style={styles.row}>
         <GitAvatar uri={item.ownerAvatarUrl} />
         <View style={styles.primaryInfoContainer}>
-          <GitRepoName>{item.fullName}</GitRepoName>
+          <GitRepoName style={styles.name}>{item.fullName}</GitRepoName>
           <GitRepoDescription style={styles.description}>{item.description}</GitRepoDescription>
           <View style={styles.languageRow}>
             <GitRepoLanguage>{item.language}</GitRepoLanguage>

@@ -1,10 +1,14 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
+import { Redirect, Route, Switch } from "react-router-native";
+
 import Constants from "expo-constants";
+
 import RepositoryList from "./RepositoryList";
 import AppBar from "./AppBar";
 import AppBarTab from "./AppBarTab";
 import theme from "../theme";
+import SignIn from "./SignIn";
 
 
 
@@ -18,18 +22,22 @@ const styles = StyleSheet.create({
 });
 
 const Main = () => {
-  const handleTabPress = (event) => {
-    console.log("View name pressed:", event);
-  };
-
   return (
     <View style={styles.container}>
       <AppBar>
-        <AppBarTab
-          label="Repositories"
-          pressHandler={handleTabPress} />
+        <AppBarTab label="Repositories" linkTo="/" />
+        <AppBarTab label="Sign In" linkTo="/signin" />
       </AppBar>
-      <RepositoryList />
+
+      <Switch>
+        <Route path="/signin">
+          <SignIn />
+        </Route>
+        <Route exact path="/">
+          <RepositoryList />
+        </Route>
+        <Redirect to="/" />
+      </Switch>
     </View>
   );
 };

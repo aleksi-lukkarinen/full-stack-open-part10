@@ -6,8 +6,9 @@ import theme from "../theme";
 
 const styles = StyleSheet.create({
   container: {
-    paddingVertical: 15,
-    paddingHorizontal: 10,
+    flexDirection: "row",
+    paddingVertical: 5,
+    paddingHorizontal: 1,
     backgroundColor: theme.colors.backgroundInverted,
   },
 });
