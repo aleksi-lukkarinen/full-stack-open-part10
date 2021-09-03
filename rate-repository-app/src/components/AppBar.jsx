@@ -1,5 +1,5 @@
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, ScrollView } from "react-native";
 import theme from "../theme";
 
 
@@ -16,7 +16,9 @@ const styles = StyleSheet.create({
 const AppBar = ({ children }) => {
   return (
     <View style={styles.container}>
-      { children }
+      <ScrollView horizontal={true}>
+        { children }
+      </ScrollView>
     </View>
   );
 };
