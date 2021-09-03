@@ -27,6 +27,9 @@ const styles = StyleSheet.create({
   fontSizeHeading2: {
     fontSize: theme.fontSizes.heading2,
   },
+  fontSizeSmall: {
+    fontSize: theme.fontSizes.small,
+  },
   fontWeightBold: {
     fontWeight: theme.fontWeights.bold,
   },
@@ -40,6 +43,7 @@ const Text = ({ color, size, weight, style, ...props }) => {
     color === "accent2" && styles.colorAccent2,
     size === "heading1" && styles.fontSizeHeading1,
     size === "heading2" && styles.fontSizeHeading2,
+    size === "small" && styles.fontSizeSmall,
     weight === "bold" && styles.fontWeightBold,
     style,
   ];

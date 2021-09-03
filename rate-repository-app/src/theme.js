@@ -5,13 +5,15 @@ const theme = {
     background: "#ffffff",
     foregroundInverted: "#ffffff",
     backgroundInverted: "#24292e",
-    accent1: "#0366d6",
-    accent2: "#586069",
+    accent1: "#4499ff",
+    accent2: "#999999",
+    separator: "#eeeeee",
   },
   fontSizes: {
     heading1: 18,
     heading2: 16,
     body: 14,
+    small: 12,
   },
   fonts: {
     main: "System",
