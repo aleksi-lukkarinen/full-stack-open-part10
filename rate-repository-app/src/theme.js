@@ -5,6 +5,7 @@ const theme = {
     background: "#ffffff",
     foregroundInverted: "#ffffff",
     backgroundInverted: "#24292e",
+    errorText: "#990000",
     accent1: "#4499ff",
     accent2: "#999999",
     separator: "#eeeeee",
