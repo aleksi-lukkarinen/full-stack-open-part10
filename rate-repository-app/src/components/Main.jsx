@@ -33,10 +33,10 @@ const Main = () => {
         <Route path="/signin">
           <SignIn />
         </Route>
+        <Redirect to="/signin" />
         <Route exact path="/">
           <RepositoryList />
         </Route>
-        <Redirect to="/" />
       </Switch>
     </View>
   );
