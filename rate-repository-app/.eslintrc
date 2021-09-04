@@ -1,5 +1,11 @@
 {
   "plugins": ["react"],
+  "globals": {
+    "__dirname": "readonly",
+    "process": "readonly",
+    "require": "readonly",
+    "module": "writable"
+  },
   "settings": {
     "react": {
       "version": "detect"
