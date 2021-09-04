@@ -16,6 +16,7 @@ const styles = StyleSheet.create({
   container: {
     backgroundColor: theme.colors.background,
     marginTop: Constants.statusBarHeight,
+    fontFamily: theme.fonts.main,
     flexGrow: 1,
     flexShrink: 1,
   },
@@ -33,10 +34,10 @@ const Main = () => {
         <Route path="/signin">
           <SignIn />
         </Route>
-        <Redirect to="/signin" />
         <Route exact path="/">
           <RepositoryList />
         </Route>
+        <Redirect to="/signin" />
       </Switch>
     </View>
   );

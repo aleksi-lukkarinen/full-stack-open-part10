@@ -6,6 +6,7 @@ import theme from "../theme";
 
 const styles = StyleSheet.create({
   textField: {
+    fontFamily: theme.fonts.main,
     marginBottom: 5,
     paddingHorizontal: 12,
     paddingVertical: 5,
