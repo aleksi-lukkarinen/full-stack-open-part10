@@ -1,11 +1,12 @@
-import { Formik } from "formik";
 import React from "react";
+import { Formik } from "formik";
 import { Pressable, View, StyleSheet } from "react-native";
 import * as yup from "yup";
 import useSignIn from "../hooks/useSignIn";
 import theme from "../theme";
 import FormikTextInput from "./FormikTextInput";
 import Text from "./Text";
+import { useHistory } from "react-router-native";
 
 
 
@@ -49,14 +50,15 @@ const validationSchema = yup.object().shape({
 });
 
 const SignIn = () => {
+  const history = useHistory();
   const [signIn] = useSignIn();
 
   const onSubmit = async (values) => {
     const {username, password} = values;
 
     try {
-      const {data} = await signIn(username, password);
-      console.log(data);
+      await signIn(username, password);
+      history.push("/");
     }
     catch (e) {
       console.log(e);
@@ -71,24 +73,35 @@ const SignIn = () => {
 
       {({ handleSubmit }) => (
         <View style={styles.container}>
-        <FormikTextInput
-          name="username"
-          style={styles.textField}
-          placeholder="Username" />
+          <FormikTextInput
+            name="username"
+            style={styles.textField}
+            autoFocus={true}
+            autoCapitalize="none"
+            autoCorrect={false}
+            autoCompleteType="username"
+            textContentType="username"
+            placeholder="Username" />
 
-        <FormikTextInput
-          name="password"
-          style={styles.textField}
-          secureTextEntry
-          placeholder="Password" />
+          <FormikTextInput
+            name="password"
+            style={styles.textField}
+            secureTextEntry
+            autoCapitalize="none"
+            autoCorrect={false}
+            autoCompleteType="password"
+            textContentType="password"
+            placeholder="Password" />
 
-        <Pressable onPress={handleSubmit}>
-          <Text style={styles.button}>Sign In</Text>
-        </Pressable>
-      </View>
-    )}
+          <Pressable onPress={handleSubmit}>
+            <Text style={styles.button}>Sign In</Text>
+          </Pressable>
+        </View>
+      )}
     </Formik>
   );
+  // returnKeyType="next" onSubmitEditing={toPasswordField}
+  // returnKeyType="send" onSubmitEditing={handleSubmit}
 };
 
 export default SignIn;

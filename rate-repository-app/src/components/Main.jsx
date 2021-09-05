@@ -1,13 +1,17 @@
 import React from "react";
 import { StyleSheet, View } from "react-native";
-import { Redirect, Route, Switch } from "react-router-native";
+import { Redirect, Route, Switch, useHistory } from "react-router-native";
+
+import { useApolloClient, useQuery } from "@apollo/client";
 
 import Constants from "expo-constants";
 
-import RepositoryList from "./RepositoryList";
+import { GET_AUTHORIZED_USER } from "../graphql/queries";
+import theme from "../theme";
+import useAuthStorage from "../hooks/useAuthStorage";
 import AppBar from "./AppBar";
 import AppBarTab from "./AppBarTab";
-import theme from "../theme";
+import RepositoryList from "./RepositoryList";
 import SignIn from "./SignIn";
 
 
@@ -23,11 +27,45 @@ const styles = StyleSheet.create({
 });
 
 const Main = () => {
+  const apolloClient = useApolloClient();
+  const authStorage = useAuthStorage();
+  const history = useHistory();
+
+  const handleSignOut = async () => {
+    await authStorage.removeAccessToken();
+    await apolloClient.resetStore();
+    history.push("/");
+  };
+
+  const {
+    data: userQueryResult,
+    error: errorWithUserQuery,
+    loading: userQueryLoading } =
+        useQuery(GET_AUTHORIZED_USER, {
+          fetchPolicy: "no-cache"
+        });
+
+  if (errorWithUserQuery) {
+    console.log(errorWithUserQuery);
+  }
+
+  const showSignOut =
+    !userQueryLoading
+    && userQueryResult
+    && userQueryResult.authorizedUser;
+
   return (
     <View style={styles.container}>
       <AppBar>
         <AppBarTab label="Repositories" linkTo="/" />
-        <AppBarTab label="Sign In" linkTo="/signin" />
+        { showSignOut
+            ? <AppBarTab
+                  label="Sign Out"
+                  pressHandler={handleSignOut} />
+            : <AppBarTab
+                  label="Sign In"
+                  linkTo="/signin" />
+        }
       </AppBar>
 
       <Switch>
@@ -37,7 +75,7 @@ const Main = () => {
         <Route exact path="/">
           <RepositoryList />
         </Route>
-        <Redirect to="/signin" />
+        <Redirect to="/" />
       </Switch>
     </View>
   );
