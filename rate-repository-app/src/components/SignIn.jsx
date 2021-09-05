@@ -2,6 +2,7 @@ import { Formik } from "formik";
 import React from "react";
 import { Pressable, View, StyleSheet } from "react-native";
 import * as yup from "yup";
+import useSignIn from "../hooks/useSignIn";
 import theme from "../theme";
 import FormikTextInput from "./FormikTextInput";
 import Text from "./Text";
@@ -29,8 +30,8 @@ const initialState = {
   password: "",
 };
 
-const USERNAME_MIN_LENGTH = 8;
-const PASSWORD_MIN_LENGTH = 10;
+const USERNAME_MIN_LENGTH = 2;
+const PASSWORD_MIN_LENGTH = 8;
 
 const validationSchema = yup.object().shape({
   username: yup
@@ -48,8 +49,18 @@ const validationSchema = yup.object().shape({
 });
 
 const SignIn = () => {
-  const onSubmit = (values) => {
-    console.log(values);
+  const [signIn] = useSignIn();
+
+  const onSubmit = async (values) => {
+    const {username, password} = values;
+
+    try {
+      const {data} = await signIn(username, password);
+      console.log(data);
+    }
+    catch (e) {
+      console.log(e);
+    }
   };
 
   return (
