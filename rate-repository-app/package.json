@@ -2,13 +2,24 @@
   "main": "node_modules/expo/AppEntry.js",
   "scripts": {
     "start": "expo start",
+    "test": "jest",
     "lint": "eslint ./src/**/*.{js,jsx} App.js --no-error-on-unmatched-pattern",
     "android": "expo start --android",
     "ios": "expo start --ios",
     "web": "expo start --web",
     "eject": "expo eject"
   },
-  "dependencies": {
+  "jest": {
+    "preset": "jest-expo",
+    "transform": {
+      "^.+\\.jsx?$": "babel-jest"
+    },
+    "transformIgnorePatterns": [
+      "node_modules/(?!(jest-)?react-native|react-clone-referenced-element|@react-native-community|expo(nent)?|@expo(nent)?/.*|react-navigation|@react-navigation/.*|@unimodules/.*|unimodules|sentry-expo|native-base|@sentry/.*|react-router-native)"
+    ],
+    "setupFilesAfterEnv": ["<rootDir>/setupTests.js"]
+  },
+    "dependencies": {
     "@apollo/client": "^3.4.10",
     "@react-native-async-storage/async-storage": "^1.15.7",
     "dotenv": "^10.0.0",

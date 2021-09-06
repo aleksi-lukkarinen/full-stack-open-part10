@@ -1,5 +1,7 @@
 import React from "react";
 import { View, StyleSheet } from "react-native";
+
+import { numberToKiloString } from "../utils/presentation";
 import Text from "./Text";
 
 
@@ -19,21 +21,25 @@ const styles = StyleSheet.create({
   },
 });
 
-const GitRepoStat = ({ name, value }) => {
+const GitRepoStat = ({ name, value, testID }) => {
   const clearedName = name.trim();
-
-  let clearedValue = value;
-  if (typeof(value) === "number") {
-    if (value > 1000) {
-      const v = Math.round(Math.trunc(value) / 100) / 10;
-      clearedValue = `${v}k`;
-    }
-  }
+  const clearedValue = numberToKiloString(value);
 
   return (
     <View style={styles.container}>
-      <Text weight="bold" style={styles.value}>{clearedValue}</Text>
-      <Text color="accent2" style={styles.name}>{clearedName}</Text>
+      <Text
+        weight="bold"
+        style={styles.value}
+        testID={`${testID}Value`}>
+          {clearedValue}
+      </Text>
+
+      <Text
+        color="accent2"
+        style={styles.value}
+        testID={`${testID}Name`}>
+          {clearedName}
+      </Text>
     </View>
   );
 };

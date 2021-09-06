@@ -44,18 +44,46 @@ const RepositoryItem = ({ item }) => {
       <View style={styles.row}>
         <GitAvatar uri={item.ownerAvatarUrl} />
         <View style={styles.primaryInfoContainer}>
-          <GitRepoName style={styles.name}>{item.fullName}</GitRepoName>
-          <GitRepoDescription style={styles.description}>{item.description}</GitRepoDescription>
+          <GitRepoName
+            style={styles.name}
+            testID="GitRepoName">
+              {item.fullName}
+          </GitRepoName>
+
+          <GitRepoDescription
+            style={styles.description}
+            testID="GitRepoDescription">
+              {item.description}
+          </GitRepoDescription>
+
           <View style={styles.languageRow}>
-            <GitRepoLanguage>{item.language}</GitRepoLanguage>
+            <GitRepoLanguage
+              testID="GitRepoLanguage">
+                {item.language}
+            </GitRepoLanguage>
           </View>
         </View>
       </View>
       <View style={styles.statRow}>
-        <GitRepoStat name="Stars" value={item.stargazersCount} />
-        <GitRepoStat name="Forks" value={item.forksCount} />
-        <GitRepoStat name="Reviews" value={item.reviewCount} />
-        <GitRepoStat name="Rating" value={item.ratingAverage} />
+        <GitRepoStat
+          name="Stars"
+          value={item.stargazersCount}
+          testID="GitRepoStatStars"/>
+
+        <GitRepoStat
+          name="Forks"
+          value={item.forksCount}
+          testID="GitRepoStatForks" />
+
+        <GitRepoStat
+          name="Reviews"
+          value={item.reviewCount}
+          testID="GitRepoStatReviews" />
+
+        <GitRepoStat
+          name="Rating"
+          value={item.ratingAverage}
+          testID="GitRepoStatRating" />
       </View>
     </View>
   );
