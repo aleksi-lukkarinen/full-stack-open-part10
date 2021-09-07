@@ -13,6 +13,7 @@ import AppBar from "./AppBar";
 import AppBarTab from "./AppBarTab";
 import RepositoryList from "./RepositoryList";
 import SignIn from "./SignIn";
+import RepositoryDetails from "./RepositoryDetails";
 
 
 
@@ -71,6 +72,9 @@ const Main = () => {
       <Switch>
         <Route path="/signin">
           <SignIn />
+        </Route>
+        <Route path="/repoDetails/:repoId">
+          <RepositoryDetails />
         </Route>
         <Route exact path="/">
           <RepositoryList />

@@ -11,7 +11,7 @@ import theme from "../theme";
 const styles = StyleSheet.create({
   errorText: {
     marginBottom: 10,
-    color: theme.colors.errorText,
+    color: theme.colors.warning,
   },
 });
 

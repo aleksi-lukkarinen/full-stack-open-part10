@@ -1,6 +1,8 @@
+import { Linking } from "expo";
 import React from "react";
-import { View, StyleSheet } from "react-native";
+import { View, StyleSheet, Pressable, Text } from "react-native";
 
+import theme from "../theme";
 import GitAvatar from "./GitAvatar";
 import GitRepoDescription from "./GitRepoDescription";
 import GitRepoLanguage from "./GitRepoLanguage";
@@ -36,9 +38,67 @@ const styles = StyleSheet.create({
     justifyContent: "space-evenly",
     marginTop: 8,
   },
+  detailViewButtonRow: {
+    flexDirection: "row",
+    marginTop: 15,
+  },
+  button: {
+    flexGrow: 1,
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+    backgroundColor: theme.colors.accent1,
+    color: theme.colors.foregroundInverted,
+    fontWeight: theme.fontWeights.bold,
+    borderRadius: 5,
+  },
+  deleteButton: {
+    flexGrow: 0,
+    backgroundColor: theme.colors.warning,
+  },
+  buttonText: {
+    textAlign: "center",
+    color: theme.colors.foregroundInverted,
+    fontWeight: theme.fontWeights.bold,
+  },
+  buttonSeparator: {
+    width: 10,
+  }
 });
 
-const RepositoryItem = ({ item }) => {
+const RepositoryItem = ({ item, showDetailViewButtons }) => {
+/*
+  const deleteButtonStyle = [
+    styles.button,
+    styles.deleteButton,
+  ];
+*/
+  const handleOpeningInGitHub = (url) => {
+    try {
+      Linking.openURL(url);
+    }
+    catch (e) {
+      console.log(`Opening URL "${url}" failed: ${e}`);
+    }
+  };
+/*
+  const handleDeletion = () => {
+    alert("Deletion");
+  };
+*/
+  if (typeof(item) !== "object") {
+    return (
+      <View>
+        <Text style={{textAlign: "center", marginTop: 20, fontWeight: "bold"}}>
+          Missing or malformatted repository item{"\n"}
+          argument of type &quot;{typeof(item)}&quot;:
+        </Text>
+        <Text style={{textAlign: "center", marginTop: 10}}>
+          {item}
+        </Text>
+      </View>
+    );
+  }
+
   return (
     <View style={styles.masterContainer}>
       <View style={styles.row}>
@@ -85,8 +145,25 @@ const RepositoryItem = ({ item }) => {
           value={item.ratingAverage}
           testID="GitRepoStatRating" />
       </View>
+      {!showDetailViewButtons ? <></> :
+        <View style={styles.detailViewButtonRow}>
+          <Pressable
+            style={styles.button}
+            onPress={() => handleOpeningInGitHub(item.url)}>
+
+            <Text style={styles.buttonText}>Open in GitHub</Text>
+          </Pressable>
+        </View>
+      }
     </View>
   );
 };
+
+/*
+        <View style={styles.buttonSeparator} />
+        <Pressable style={deleteButtonStyle} onPress={handleDeletion}>
+          <Text style={styles.buttonText}>Delete</Text>
+        </Pressable>
+*/
 
 export default RepositoryItem;
