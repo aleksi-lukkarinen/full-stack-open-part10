@@ -2,9 +2,9 @@ import React from "react";
 import { FlatList, View, StyleSheet, Pressable } from "react-native";
 import { useHistory } from "react-router-native";
 
-import useRepositories from "../hooks/useRepositories";
 import theme from "../theme";
-import RepositoryItem from "./RepositoryItem";
+import useRepositories from "../hooks/useRepositories";
+import RepositoryListItem from "./RepositoryListItem";
 
 
 
@@ -27,7 +27,6 @@ export const RepositoryListContainer = ({ repositories }) => {
     history.push(`/repoDetails/${repoId}`);
   };
 
-  // Get the nodes from the edges array
   const repositoryNodes = repositories
     ? repositories.edges.map(edge => edge.node)
     : [];
@@ -38,7 +37,7 @@ export const RepositoryListContainer = ({ repositories }) => {
       ItemSeparatorComponent={ItemSeparator}
       renderItem={({ item }) => (
         <Pressable onPress={() => handleRepoItemPress(item.id)}>
-          <RepositoryItem
+          <RepositoryListItem
             item={item}
             showDetailViewButtons={false} />
         </Pressable>

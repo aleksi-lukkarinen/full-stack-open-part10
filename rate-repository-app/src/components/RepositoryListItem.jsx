@@ -22,6 +22,7 @@ const styles = StyleSheet.create({
   primaryInfoContainer: {
     margin: 0,
     paddingLeft: 10,
+    flexShrink: 1,
   },
   name: {
     marginTop: -3,
@@ -65,7 +66,7 @@ const styles = StyleSheet.create({
   }
 });
 
-const RepositoryItem = ({ item, showDetailViewButtons }) => {
+const RepositoryListItem = ({ item, showDetailViewButtons }) => {
 /*
   const deleteButtonStyle = [
     styles.button,
@@ -166,4 +167,4 @@ const RepositoryItem = ({ item, showDetailViewButtons }) => {
         </Pressable>
 */
 
-export default RepositoryItem;
+export default RepositoryListItem;
