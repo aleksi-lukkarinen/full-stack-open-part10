@@ -61,9 +61,10 @@ const TEST_ID_RATING = "GitRepoStatRatingValue";
 describe("RepositoryList", () => {
   describe("RepositoryListContainer", () => {
     /*
-      This test ensures that the correct data is displayed
+      This test ensures that the given data is displayed
       by the correct kind of component based on TestIDs.
-      It ignores the actual order of the data in case it changes.
+      It ignores the actual order of the data in the list
+      in case the order changes.
 
       On the other hand, the test does not ensure that the
       data of one repo is presented as a single repository,
