@@ -1,12 +1,14 @@
 import React from "react";
-import { Formik } from "formik";
 import { Pressable, View, StyleSheet } from "react-native";
+import { useHistory } from "react-router-native";
+
+import { Formik } from "formik";
 import * as yup from "yup";
-import useSignIn from "../hooks/useSignIn";
+
 import theme from "../theme";
+import useSignIn from "../hooks/useSignIn";
 import FormikTextInput from "./FormikTextInput";
 import Text from "./Text";
-import { useHistory } from "react-router-native";
 
 
 
@@ -49,22 +51,7 @@ const validationSchema = yup.object().shape({
       `${PASSWORD_MIN_LENGTH} characters long.`),
 });
 
-const SignIn = () => {
-  const history = useHistory();
-  const [signIn] = useSignIn();
-
-  const onSubmit = async (values) => {
-    const {username, password} = values;
-
-    try {
-      await signIn(username, password);
-      history.push("/");
-    }
-    catch (e) {
-      console.log(e);
-    }
-  };
-
+export const SignInContainer = ({ onSubmit }) => {
   return (
     <Formik
       initialValues={initialState}
@@ -81,7 +68,8 @@ const SignIn = () => {
             autoCorrect={false}
             autoCompleteType="username"
             textContentType="username"
-            placeholder="Username" />
+            placeholder="Username"
+            testID="UsernameField" />
 
           <FormikTextInput
             name="password"
@@ -91,9 +79,13 @@ const SignIn = () => {
             autoCorrect={false}
             autoCompleteType="password"
             textContentType="password"
-            placeholder="Password" />
+            placeholder="Password"
+            testID="PasswordField" />
 
-          <Pressable onPress={handleSubmit}>
+          <Pressable
+            onPress={handleSubmit}
+            testID="SubmitButton">
+
             <Text style={styles.button}>Sign In</Text>
           </Pressable>
         </View>
@@ -104,4 +96,25 @@ const SignIn = () => {
   // returnKeyType="send" onSubmitEditing={handleSubmit}
 };
 
+
+const SignIn = () => {
+  const history = useHistory();
+  const [signIn] = useSignIn();
+
+  const onSubmit = async (values) => {
+    const {username, password} = values;
+
+    try {
+      await signIn(username, password);
+      history.push("/");
+    }
+    catch (e) {
+      console.log(e);
+    }
+  };
+
+  return <SignInContainer onSubmit={onSubmit} />;
+};
+
 export default SignIn;
+
