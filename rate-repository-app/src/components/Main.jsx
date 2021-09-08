@@ -15,6 +15,7 @@ import RepositoryList from "./RepositoryList";
 import SignIn from "./SignIn";
 import RepositoryDetails from "./RepositoryDetails";
 import CreateReview from "./CreateReview";
+import SignUp from "./SignUp";
 
 
 
@@ -73,15 +74,23 @@ const Main = () => {
                     label="Sign Out"
                     pressHandler={handleSignOut} />
               </>
-            : <AppBarTab
-                  label="Sign In"
-                  linkTo="/signin" />
+            : <>
+                <AppBarTab
+                    label="Sign In"
+                    linkTo="/signIn" />
+                <AppBarTab
+                    label="Sign Up"
+                    linkTo="/signUp" />
+              </>
         }
       </AppBar>
 
       <Switch>
-        <Route path="/signin">
+        <Route path="/signIn">
           <SignIn />
+        </Route>
+        <Route path="/signUp">
+          <SignUp />
         </Route>
         <Route path="/createReview">
           <CreateReview />

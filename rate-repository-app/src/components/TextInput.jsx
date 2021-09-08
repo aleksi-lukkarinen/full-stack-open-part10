@@ -16,7 +16,7 @@ const styles = StyleSheet.create({
     borderRadius: 3,
   },
   textFieldWithErrors: {
-    borderColor: theme.colors.errorText,
+    borderColor: theme.colors.warning,
   },
 });
 
