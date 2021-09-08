@@ -14,6 +14,7 @@ import AppBarTab from "./AppBarTab";
 import RepositoryList from "./RepositoryList";
 import SignIn from "./SignIn";
 import RepositoryDetails from "./RepositoryDetails";
+import CreateReview from "./CreateReview";
 
 
 
@@ -39,7 +40,7 @@ const Main = () => {
   };
 
   const handleCreatingReview = () => {
-    alert("Create a Review");
+    history.push("/createReview");
   };
 
   const {
@@ -82,13 +83,16 @@ const Main = () => {
         <Route path="/signin">
           <SignIn />
         </Route>
+        <Route path="/createReview">
+          <CreateReview />
+        </Route>
         <Route path="/repoDetails/:repoId">
           <RepositoryDetails />
         </Route>
         <Route exact path="/">
           <RepositoryList />
         </Route>
-        <Redirect to="/" />
+        <Redirect to="/createReview" />
       </Switch>
     </View>
   );
