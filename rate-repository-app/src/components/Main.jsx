@@ -38,6 +38,10 @@ const Main = () => {
     history.push("/");
   };
 
+  const handleCreatingReview = () => {
+    alert("Create a Review");
+  };
+
   const {
     data: userQueryResult,
     error: errorWithUserQuery,
@@ -50,7 +54,7 @@ const Main = () => {
     console.log(errorWithUserQuery);
   }
 
-  const showSignOut =
+  const isUserLoggedIn =
     !userQueryLoading
     && userQueryResult
     && userQueryResult.authorizedUser;
@@ -59,10 +63,15 @@ const Main = () => {
     <View style={styles.container}>
       <AppBar>
         <AppBarTab label="Repositories" linkTo="/" />
-        { showSignOut
-            ? <AppBarTab
-                  label="Sign Out"
-                  pressHandler={handleSignOut} />
+        { isUserLoggedIn
+            ? <>
+                <AppBarTab
+                    label="Create a Review"
+                    pressHandler={handleCreatingReview} />
+                <AppBarTab
+                    label="Sign Out"
+                    pressHandler={handleSignOut} />
+              </>
             : <AppBarTab
                   label="Sign In"
                   linkTo="/signin" />
