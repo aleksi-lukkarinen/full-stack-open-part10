@@ -111,18 +111,21 @@ const RepositoryListItem = ({ item, showDetailViewButtons }) => {
               {item.fullName}
           </GitRepoName>
 
-          <GitRepoDescription
-            style={styles.description}
-            testID="GitRepoDescription">
-              {item.description}
-          </GitRepoDescription>
-
-          <View style={styles.languageRow}>
-            <GitRepoLanguage
-              testID="GitRepoLanguage">
-                {item.language}
-            </GitRepoLanguage>
-          </View>
+          {!item.description ? <></> :
+            <GitRepoDescription
+              style={styles.description}
+              testID="GitRepoDescription">
+                {item.description}
+            </GitRepoDescription>
+          }
+          {!item.language ? <></> :
+            <View style={styles.languageRow}>
+              <GitRepoLanguage
+                testID="GitRepoLanguage">
+                  {item.language}
+              </GitRepoLanguage>
+            </View>
+          }
         </View>
       </View>
       <View style={styles.statRow}>
