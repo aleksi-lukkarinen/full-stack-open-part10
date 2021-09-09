@@ -12,8 +12,14 @@ export const GET_AUTHORIZED_USER = gql`
 `;
 
 export const GET_REPOSITORIES = gql`
-  query GetRepositories {
-    repositories {
+  query GetRepositories(
+      $sortOrder: AllRepositoriesOrderBy,
+      $sortDirection: OrderDirection,
+    ) {
+    repositories(
+      orderBy: $sortOrder,
+      orderDirection: $sortDirection,
+    ) {
       edges {
         node {
           id,

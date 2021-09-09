@@ -1,4 +1,4 @@
-import React from "react";
+import React, { useState } from "react";
 import { StyleSheet, View } from "react-native";
 import { Redirect, Route, Switch, useHistory } from "react-router-native";
 
@@ -6,6 +6,7 @@ import { useApolloClient, useQuery } from "@apollo/client";
 
 import Constants from "expo-constants";
 
+import { REPO_LIST_SORTING_OPTIONS } from "../constants";
 import { GET_AUTHORIZED_USER } from "../graphql/queries";
 import theme from "../theme";
 import useAuthStorage from "../hooks/useAuthStorage";
@@ -34,6 +35,9 @@ const Main = () => {
   const authStorage = useAuthStorage();
   const history = useHistory();
 
+  const [currentRepoListSorting, setCurrentRepoListSorting] =
+    useState(REPO_LIST_SORTING_OPTIONS[0]);
+
   const handleSignOut = async () => {
     await authStorage.removeAccessToken();
     await apolloClient.resetStore();
@@ -61,28 +65,35 @@ const Main = () => {
     && userQueryResult
     && userQueryResult.authorizedUser;
 
+  const tabsForLoggedInUsers = (
+    <>
+      <AppBarTab
+          label="Create a Review"
+          pressHandler={handleCreatingReview} />
+      <AppBarTab
+          label="Sign Out"
+          pressHandler={handleSignOut} />
+    </>
+  );
+
+  const tabsForUnknownUsers = (
+    <>
+      <AppBarTab
+          label="Sign In"
+          linkTo="/signIn" />
+      <AppBarTab
+          label="Sign Up"
+          linkTo="/signUp" />
+    </>
+  );
+
   return (
     <View style={styles.container}>
       <AppBar>
         <AppBarTab label="Repositories" linkTo="/" />
         { isUserLoggedIn
-            ? <>
-                <AppBarTab
-                    label="Create a Review"
-                    pressHandler={handleCreatingReview} />
-                <AppBarTab
-                    label="Sign Out"
-                    pressHandler={handleSignOut} />
-              </>
-            : <>
-                <AppBarTab
-                    label="Sign In"
-                    linkTo="/signIn" />
-                <AppBarTab
-                    label="Sign Up"
-                    linkTo="/signUp" />
-              </>
-        }
+            ? tabsForLoggedInUsers
+            : tabsForUnknownUsers }
       </AppBar>
 
       <Switch>
@@ -99,7 +110,9 @@ const Main = () => {
           <RepositoryDetails />
         </Route>
         <Route exact path="/">
-          <RepositoryList />
+          <RepositoryList
+              currentSorting={currentRepoListSorting}
+              setCurrentSorting={setCurrentRepoListSorting} />
         </Route>
         <Redirect to="/createReview" />
       </Switch>
