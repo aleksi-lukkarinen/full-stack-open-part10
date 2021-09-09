@@ -26,7 +26,31 @@ const styles = StyleSheet.create({
     color: theme.colors.foregroundInverted,
     fontWeight: theme.fontWeights.bold,
     borderRadius: 5,
-  }
+  },
+  signUpPromptContainer: {
+    flexDirection: "column",
+  },
+  signUpPromptSeparator: {
+    flexDirection: "row",
+    justifyContent: "center",
+    alignContent: "center",
+    marginTop: 40,
+  },
+  signUpPromptSeparatorDot: {
+    backgroundColor: theme.colors.accent2,
+    width: 6,
+    height: 6,
+    borderRadius: 3,
+    marginHorizontal: 2,
+  },
+  signUpPrompt: {
+    marginTop: 20,
+    textAlign: "center",
+  },
+  link: {
+    color: theme.colors.accent1,
+    textDecorationLine: "underline",
+  },
 });
 
 const initialState = {
@@ -44,45 +68,64 @@ const validationSchema = yup.object().shape({
 });
 
 export const SignInContainer = ({ onSubmit }) => {
+  const history = useHistory();
+
+  const openSignUp = () => {
+    history.push(C.PATH_SIGN_UP);
+  };
+
   return (
-    <Formik
-      initialValues={initialState}
-      validationSchema={validationSchema}
-      onSubmit={onSubmit}>
+    <>
+      <Formik
+        initialValues={initialState}
+        validationSchema={validationSchema}
+        onSubmit={onSubmit}>
 
-      {({ handleSubmit }) => (
-        <View style={styles.container}>
-          <FormikTextInput
-            name="username"
-            style={styles.textField}
-            autoFocus={true}
-            autoCapitalize="none"
-            autoCorrect={false}
-            autoCompleteType="username"
-            textContentType="username"
-            placeholder="Username"
-            testID="UsernameField" />
+        {({ handleSubmit }) => (
+          <View style={styles.container}>
+            <FormikTextInput
+              name="username"
+              style={styles.textField}
+              autoFocus={true}
+              autoCapitalize="none"
+              autoCorrect={false}
+              autoCompleteType="username"
+              textContentType="username"
+              placeholder="Username"
+              testID="UsernameField" />
 
-          <FormikTextInput
-            name="password"
-            style={styles.textField}
-            secureTextEntry
-            autoCapitalize="none"
-            autoCorrect={false}
-            autoCompleteType="password"
-            textContentType="password"
-            placeholder="Password"
-            testID="PasswordField" />
+            <FormikTextInput
+              name="password"
+              style={styles.textField}
+              secureTextEntry
+              autoCapitalize="none"
+              autoCorrect={false}
+              autoCompleteType="password"
+              textContentType="password"
+              placeholder="Password"
+              testID="PasswordField" />
 
-          <Pressable
-            onPress={handleSubmit}
-            testID="SubmitButton">
+            <Pressable
+              onPress={handleSubmit}
+              testID="SubmitButton">
 
-            <Text style={styles.button}>Sign In</Text>
-          </Pressable>
+              <Text style={styles.button}>Sign In</Text>
+            </Pressable>
+          </View>
+        )}
+      </Formik>
+      <View style={styles.signUpPromptContainer}>
+        <View style={styles.signUpPromptSeparator}>
+          <View style={styles.signUpPromptSeparatorDot} />
+          <View style={styles.signUpPromptSeparatorDot} />
+          <View style={styles.signUpPromptSeparatorDot} />
         </View>
-      )}
-    </Formik>
+        <Text style={styles.signUpPrompt}>
+          If you do not have an account yet,
+          please <Text onPress={openSignUp} style={styles.link}>Sign Up</Text>.
+        </Text>
+      </View>
+    </>
   );
   // returnKeyType="next" onSubmitEditing={toPasswordField}
   // returnKeyType="send" onSubmitEditing={handleSubmit}
