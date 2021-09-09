@@ -1,9 +1,9 @@
 import React, { useState } from "react";
 import { FlatList, View, StyleSheet, Pressable } from "react-native";
 import { useHistory } from "react-router-native";
-import { Menu, IconButton } from "react-native-paper";
+import { Menu, IconButton, Searchbar } from "react-native-paper";
 
-import { REPO_LIST_SORTING_OPTIONS } from "../constants";
+import * as C from "../constants";
 import theme from "../theme";
 import useRepositories from "../hooks/useRepositories";
 import RepositoryListItem from "./RepositoryListItem";
@@ -20,11 +20,13 @@ const styles = StyleSheet.create({
   listHeaderContainer: {
     flexDirection: "row",
     justifyContent: "center",
+    alignItems: "center",
+    padding: 10,
   },
   searchBar: {
-    backgroundColor: "gray",
     flexGrow: 1,
     flexShrink: 1,
+    marginRight: 5,
   },
   sortingButton: {
     flexGrow: 0,
@@ -50,6 +52,8 @@ const ItemSeparator = () =>
 
 export const RepositoryListContainer = ({
   repositories,
+  directSearchExpression,
+  setSearchExpression,
   currentSorting,
   setCurrentSorting,
 }) => {
@@ -65,7 +69,7 @@ export const RepositoryListContainer = ({
   };
 
   const handleRepoItemPress = (repoId) => {
-    history.push(`/repoDetails/${repoId}`);
+    history.push(`${C.PATH_REPO_DETAILS}/${repoId}`);
   };
 
   const repositoryNodes = repositories
@@ -77,7 +81,11 @@ export const RepositoryListContainer = ({
       data={repositoryNodes}
       ListHeaderComponent={
         <View style={styles.listHeaderContainer}>
-          <Text style={styles.searchBar}>Search bar</Text>
+          <Searchbar
+            style={styles.searchBar}
+            placeholder="Search"
+            value={directSearchExpression}
+            onChangeText={setSearchExpression} />
           <Menu
             visible={sortingMenuVisible}
             onDismiss={closeSortingMenu}
@@ -95,7 +103,7 @@ export const RepositoryListContainer = ({
                 </Text>
               </Pressable>
           }>
-            {REPO_LIST_SORTING_OPTIONS.map(sOpt =>
+            {C.REPO_LIST_SORTING_OPTIONS.map(sOpt =>
               <Menu.Item key={sOpt.menuLabel}
                 disabled={sOpt.menuLabel === currentSorting.menuLabel}
                 onPress={() => {handleSortSelection(sOpt);}}
@@ -117,14 +125,18 @@ export const RepositoryListContainer = ({
 
 
 const RepositoryList = ({
+  directSearchExpression,
+  searchExpression,
+  setSearchExpression,
   currentSorting,
   setCurrentSorting,
 }) => {
   const sorting = currentSorting
     ? currentSorting
-    : REPO_LIST_SORTING_OPTIONS[0];
+    : C.REPO_LIST_SORTING_OPTIONS[0];
 
   const { repositories } = useRepositories(
+    searchExpression,
     sorting.order,
     sorting.direction,
   );
@@ -132,6 +144,9 @@ const RepositoryList = ({
   const container =
     <RepositoryListContainer
       repositories={repositories}
+      directSearchExpression={directSearchExpression}
+      searchExpression={searchExpression}
+      setSearchExpression={setSearchExpression}
       currentSorting={currentSorting}
       setCurrentSorting={setCurrentSorting} />;
 

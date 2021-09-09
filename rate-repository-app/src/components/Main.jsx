@@ -4,7 +4,10 @@ import { Redirect, Route, Switch, useHistory } from "react-router-native";
 
 import { useApolloClient, useQuery } from "@apollo/client";
 
+import { useDebounce } from "use-debounce";
+
 import Constants from "expo-constants";
+import * as C from "../constants";
 
 import { REPO_LIST_SORTING_OPTIONS } from "../constants";
 import { GET_AUTHORIZED_USER } from "../graphql/queries";
@@ -35,17 +38,21 @@ const Main = () => {
   const authStorage = useAuthStorage();
   const history = useHistory();
 
+  const [directSearchExpression, setSearchExpression] = useState("");
+  const [searchExpression] =
+      useDebounce(directSearchExpression, 300);
+
   const [currentRepoListSorting, setCurrentRepoListSorting] =
     useState(REPO_LIST_SORTING_OPTIONS[0]);
 
   const handleSignOut = async () => {
     await authStorage.removeAccessToken();
     await apolloClient.resetStore();
-    history.push("/");
+    history.push(C.PATH_ROOT);
   };
 
   const handleCreatingReview = () => {
-    history.push("/createReview");
+    history.push(C.PATH_CREATE_REVIEW);
   };
 
   const {
@@ -80,41 +87,49 @@ const Main = () => {
     <>
       <AppBarTab
           label="Sign In"
-          linkTo="/signIn" />
+          linkTo={C.PATH_SIGN_IN} />
       <AppBarTab
           label="Sign Up"
-          linkTo="/signUp" />
+          linkTo={C.PATH_SIGN_UP} />
     </>
   );
 
   return (
     <View style={styles.container}>
       <AppBar>
-        <AppBarTab label="Repositories" linkTo="/" />
+        <AppBarTab label="Repositories" linkTo={C.PATH_ROOT} />
         { isUserLoggedIn
             ? tabsForLoggedInUsers
             : tabsForUnknownUsers }
       </AppBar>
 
       <Switch>
-        <Route path="/signIn">
+        <Route path={C.PATH_SIGN_IN}>
           <SignIn />
         </Route>
-        <Route path="/signUp">
+
+        <Route path={C.PATH_SIGN_UP}>
           <SignUp />
         </Route>
-        <Route path="/createReview">
+
+        <Route path={C.PATH_CREATE_REVIEW}>
           <CreateReview />
         </Route>
-        <Route path="/repoDetails/:repoId">
+
+        <Route path={C.PATH_REPO_DETAILS_PARAM}>
           <RepositoryDetails />
         </Route>
-        <Route exact path="/">
+
+        <Route exact path={C.PATH_ROOT}>
           <RepositoryList
+              directSearchExpression={directSearchExpression}
+              searchExpression={searchExpression}
+              setSearchExpression={setSearchExpression}
               currentSorting={currentRepoListSorting}
               setCurrentSorting={setCurrentRepoListSorting} />
         </Route>
-        <Redirect to="/createReview" />
+
+        <Redirect to={C.PATH_ROOT} />
       </Switch>
     </View>
   );

@@ -122,7 +122,7 @@ const SignUp = () => {
       await createUser(username, password);
       await signIn(username, password);
 
-      history.push("/");
+      history.push(C.PATH_ROOT);
     }
     catch (e) {
       console.log(e);

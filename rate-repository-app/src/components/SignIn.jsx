@@ -5,6 +5,7 @@ import { useHistory } from "react-router-native";
 import { Formik } from "formik";
 import * as yup from "yup";
 
+import * as C from "../constants";
 import theme from "../theme";
 import useSignIn from "../hooks/useSignIn";
 import FormikTextInput from "./FormikTextInput";
@@ -97,7 +98,7 @@ const SignIn = () => {
 
     try {
       await signIn(username, password);
-      history.push("/");
+      history.push(C.PATH_ROOT);
     }
     catch (e) {
       console.log(e);

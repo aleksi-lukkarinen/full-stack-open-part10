@@ -3,11 +3,11 @@ import { GET_REPOSITORIES } from "../graphql/queries";
 
 
 
-const useRepositories = (sortOrder, sortDirection) => {
+const useRepositories = (searchKeyword, sortOrder, sortDirection) => {
   const { data, error, loading } =
     useQuery(GET_REPOSITORIES, {
       fetchPolicy: "cache-and-network",
-      variables: { sortOrder, sortDirection, },
+      variables: { searchKeyword, sortOrder, sortDirection, },
     });
 
   if (loading || error) {

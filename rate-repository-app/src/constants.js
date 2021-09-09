@@ -1,3 +1,10 @@
+export const PATH_ROOT = "/";
+export const PATH_SIGN_IN = PATH_ROOT + "signIn";
+export const PATH_SIGN_UP = PATH_ROOT + "signUp";
+export const PATH_REPO_DETAILS = PATH_ROOT + "repoDetails";
+export const PATH_REPO_DETAILS_PARAM = PATH_REPO_DETAILS + "/:repoId";
+export const PATH_CREATE_REVIEW = PATH_ROOT + "createReview";
+
 export const USERNAME_MIN_LENGTH = 1;
 export const USERNAME_MAX_LENGTH = 30;
 export const PASSWORD_MIN_LENGTH = 5;
