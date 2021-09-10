@@ -40,7 +40,7 @@ const Main = () => {
 
   const [directSearchExpression, setSearchExpression] = useState("");
   const [searchExpression] =
-      useDebounce(directSearchExpression, 300);
+      useDebounce(directSearchExpression, 500);
 
   const [currentRepoListSorting, setCurrentRepoListSorting] =
     useState(REPO_LIST_SORTING_OPTIONS[0]);
