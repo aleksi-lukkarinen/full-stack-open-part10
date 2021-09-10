@@ -10,6 +10,7 @@ import theme from "../theme";
 import useSignIn from "../hooks/useSignIn";
 import FormikTextInput from "./FormikTextInput";
 import Text from "./Text";
+import ViewLink from "./ViewLink";
 
 
 
@@ -47,10 +48,6 @@ const styles = StyleSheet.create({
     marginTop: 20,
     textAlign: "center",
   },
-  link: {
-    color: theme.colors.accent1,
-    textDecorationLine: "underline",
-  },
 });
 
 const initialState = {
@@ -68,12 +65,6 @@ const validationSchema = yup.object().shape({
 });
 
 export const SignInContainer = ({ onSubmit }) => {
-  const history = useHistory();
-
-  const openSignUp = () => {
-    history.push(C.PATH_SIGN_UP);
-  };
-
   return (
     <>
       <Formik
@@ -122,7 +113,7 @@ export const SignInContainer = ({ onSubmit }) => {
         </View>
         <Text style={styles.signUpPrompt}>
           If you do not have an account yet,
-          please <Text onPress={openSignUp} style={styles.link}>Sign Up</Text>.
+          please <ViewLink to={C.PATH_SIGN_UP}>Sign Up</ViewLink>.
         </Text>
       </View>
     </>
