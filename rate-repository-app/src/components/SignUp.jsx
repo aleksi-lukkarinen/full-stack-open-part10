@@ -1,16 +1,17 @@
 import React from "react";
-import { Pressable, View, StyleSheet } from "react-native";
+import { View, StyleSheet } from "react-native";
 import { useHistory } from "react-router-native";
 
 import { Formik } from "formik";
 import * as yup from "yup";
 
 import * as C from "../constants";
-import theme from "../theme";
 import useSignIn from "../hooks/useSignIn";
-import FormikTextInput from "./FormikTextInput";
-import Text from "./Text";
 import useCreateUser from "../hooks/useCreateUser";
+import UsernameField from "./UsernameField";
+import PasswordField from "./PasswordField";
+import PasswordConfirmationField from "./PasswordConfirmationField";
+import SubmitButton from "./SubmitButton";
 
 
 
@@ -18,16 +19,6 @@ const styles = StyleSheet.create({
   container: {
     margin: 10,
   },
-  button: {
-    marginTop: 10,
-    paddingVertical: 15,
-    paddingHorizontal: 10,
-    textAlign: "center",
-    backgroundColor: theme.colors.accent1,
-    color: theme.colors.foregroundInverted,
-    fontWeight: theme.fontWeights.bold,
-    borderRadius: 5,
-  }
 });
 
 const initialState = {
@@ -67,42 +58,12 @@ export const SignUpContainer = ({ onSubmit }) => {
 
       {({ handleSubmit }) => (
         <View style={styles.container}>
-          <FormikTextInput
-            name="username"
-            style={styles.textField}
-            autoFocus={true}
-            autoCapitalize="none"
-            autoCorrect={false}
-            autoCompleteType="username"
-            textContentType="username"
-            placeholder="Username" />
-
-          <FormikTextInput
-            name="password"
-            style={styles.textField}
-            secureTextEntry
-            autoCapitalize="none"
-            autoCorrect={false}
-            autoCompleteType="password"
-            textContentType="password"
-            placeholder="Password" />
-
-          <FormikTextInput
-            name="passwordConfirmation"
-            style={styles.textField}
-            secureTextEntry
-            autoCapitalize="none"
-            autoCorrect={false}
-            autoCompleteType="password"
-            textContentType="password"
-            placeholder="Password confirmation" />
-
-          <Pressable
-            onPress={handleSubmit}
-            testID="SubmitButton">
-
-            <Text style={styles.button}>Sign Up</Text>
-          </Pressable>
+          <UsernameField />
+          <PasswordField />
+          <PasswordConfirmationField />
+          <SubmitButton
+            label="Sign Up"
+            onPress={handleSubmit} />
         </View>
       )}
     </Formik>
