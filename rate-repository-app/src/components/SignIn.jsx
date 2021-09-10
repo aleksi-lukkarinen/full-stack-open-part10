@@ -11,58 +11,9 @@ import useSignIn from "../hooks/useSignIn";
 import FormikTextInput from "./FormikTextInput";
 import Text from "./Text";
 import ViewLink from "./ViewLink";
+import DotSeparator from "./DotSeparator";
 
 
-
-const styles = StyleSheet.create({
-  container: {
-    margin: 10,
-  },
-  button: {
-    marginTop: 10,
-    paddingVertical: 15,
-    paddingHorizontal: 10,
-    textAlign: "center",
-    backgroundColor: theme.colors.accent1,
-    color: theme.colors.foregroundInverted,
-    fontWeight: theme.fontWeights.bold,
-    borderRadius: 5,
-  },
-  signUpPromptContainer: {
-    flexDirection: "column",
-  },
-  signUpPromptSeparator: {
-    flexDirection: "row",
-    justifyContent: "center",
-    alignContent: "center",
-    marginTop: 40,
-  },
-  signUpPromptSeparatorDot: {
-    backgroundColor: theme.colors.accent2,
-    width: 6,
-    height: 6,
-    borderRadius: 3,
-    marginHorizontal: 2,
-  },
-  signUpPrompt: {
-    marginTop: 20,
-    textAlign: "center",
-  },
-});
-
-const initialState = {
-  username: "",
-  password: "",
-};
-
-const validationSchema = yup.object().shape({
-  username: yup
-    .string()
-    .required("The username is required."),
-  password: yup
-    .string()
-    .required("The password is required."),
-});
 
 export const SignInContainer = ({ onSubmit }) => {
   return (
@@ -105,12 +56,8 @@ export const SignInContainer = ({ onSubmit }) => {
           </View>
         )}
       </Formik>
-      <View style={styles.signUpPromptContainer}>
-        <View style={styles.signUpPromptSeparator}>
-          <View style={styles.signUpPromptSeparatorDot} />
-          <View style={styles.signUpPromptSeparatorDot} />
-          <View style={styles.signUpPromptSeparatorDot} />
-        </View>
+      <View>
+        <DotSeparator style={styles.signUpPromptSeparator} />
         <Text style={styles.signUpPrompt}>
           If you do not have an account yet,
           please <ViewLink to={C.PATH_SIGN_UP}>Sign Up</ViewLink>.
@@ -144,3 +91,40 @@ const SignIn = () => {
 
 export default SignIn;
 
+
+const initialState = {
+  username: "",
+  password: "",
+};
+
+const validationSchema = yup.object().shape({
+  username: yup
+    .string()
+    .required("The username is required."),
+  password: yup
+    .string()
+    .required("The password is required."),
+});
+
+const styles = StyleSheet.create({
+  container: {
+    margin: 10,
+  },
+  button: {
+    marginTop: 10,
+    paddingVertical: 15,
+    paddingHorizontal: 10,
+    textAlign: "center",
+    backgroundColor: theme.colors.accent1,
+    color: theme.colors.foregroundInverted,
+    fontWeight: theme.fontWeights.bold,
+    borderRadius: 5,
+  },
+  signUpPromptSeparator: {
+    marginTop: 40,
+  },
+  signUpPrompt: {
+    marginTop: 20,
+    textAlign: "center",
+  },
+});
