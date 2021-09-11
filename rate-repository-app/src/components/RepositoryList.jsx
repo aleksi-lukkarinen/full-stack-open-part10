@@ -1,4 +1,4 @@
-import React, { Component, createRef, useEffect, useState } from "react";
+import React, { Component, useEffect, useState } from "react";
 import { FlatList, View, StyleSheet, Pressable, ActivityIndicator } from "react-native";
 import { useHistory } from "react-router-native";
 import { Menu, IconButton, Searchbar } from "react-native-paper";
@@ -64,11 +64,17 @@ export class RepositoryListContainer extends Component {
   }
 
   renderFooter = () => {
-    return !this.props.showLoadingReposFooter ? <></> :
+    const showFooter =
+        this.props.showLoadingReposFooter
+          && !this.props.showLoadingReposForEmptyList;
+
+    const footer = !showFooter ? <></> :
       <ActivityIndicator
           size={50}
           animating={true}
           color={theme.colors.accent1} />;
+
+    return footer;
   }
 
   renderEmptyComponent = () => {
@@ -136,8 +142,8 @@ const RepositoryList = ({
 
   const {
     repositories,
-    fetchMore: fetchMoreRepositories,
-    canFetchMore: canFetchMoreRepositories,
+    fetchMoreRepositories,
+    canFetchMoreRepositories,
     loading,
   } = useRepositories({
     first: 10,

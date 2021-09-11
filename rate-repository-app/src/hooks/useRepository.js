@@ -3,25 +3,39 @@ import { GET_REPOSITORY } from "../graphql/queries";
 
 
 
-const useRepository = (repoId) => {
-  const { data, error, loading } =
+const useRepository = (variables) => {
+  const { data, fetchMore, error, loading, ...queryResult } =
     useQuery(GET_REPOSITORY, {
-      variables: {repoId},
       fetchPolicy: "cache-and-network",
+      variables,
     });
 
-  if (loading || error) {
-    return {
-      repository: null,
-      loading,
-      error,
-    };
-  }
+  const canFetchMoreReviews = () => {
+    const hasMoreData = data?.repository?.reviews.pageInfo.hasNextPage;
+    return !loading && hasMoreData;
+  };
+
+  const handleFetchMoreReviews = () => {
+    if (!canFetchMoreReviews()) {
+      return;
+    }
+
+    fetchMore({
+      variables: {
+        ...variables,
+        afterReview: data.repository.reviews.pageInfo.endCursor,
+        firstNReviews: 20,
+      }
+    });
+  };
 
   return {
-    repository: data.repository,
-    loading,
+    repository: data?.repository,
+    fetchMoreReviews: handleFetchMoreReviews,
+    canFetchMoreReviews,
     error,
+    loading,
+    ...queryResult,
   };
 };
 

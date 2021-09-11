@@ -25,7 +25,7 @@ export const GET_REPOSITORIES = gql`
       searchKeyword: $searchKeyword,
       orderBy: $sortOrder,
       orderDirection: $sortDirection,
-    ) {
+      ) {
       totalCount,
       edges {
         node {
@@ -45,13 +45,17 @@ export const GET_REPOSITORIES = gql`
         endCursor,
         startCursor,
         hasNextPage,
-      }
+      },
     }
   }
 `;
 
 export const GET_REPOSITORY = gql`
-  query GetRepository($repoId: ID!) {
+  query GetRepository(
+    $repoId: ID!,
+    $afterReview: String,
+    $firstNReviews: Int,
+    ) {
     repository(id: $repoId) {
       id,
       fullName,
@@ -64,7 +68,11 @@ export const GET_REPOSITORY = gql`
       ratingAverage,
 
       url,
-      reviews {
+      reviews(
+        first: $firstNReviews,
+        after: $afterReview
+        ) {
+        totalCount,
         edges {
           node {
             id
@@ -75,8 +83,14 @@ export const GET_REPOSITORY = gql`
               id
               username
             }
-          }
-        }
+          },
+          cursor,
+        },
+        pageInfo {
+          endCursor,
+          startCursor,
+          hasNextPage,
+        },
       }
     }
   }

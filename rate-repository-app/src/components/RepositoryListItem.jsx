@@ -11,68 +11,8 @@ import GitRepoStat from "./GitRepoStat";
 
 
 
-const styles = StyleSheet.create({
-  masterContainer: {
-    padding: 10,
-    flexDirection: "column",
-  },
-  row: {
-    flexDirection: "row",
-  },
-  primaryInfoContainer: {
-    margin: 0,
-    paddingLeft: 10,
-    flexShrink: 1,
-  },
-  name: {
-    marginTop: -3,
-  },
-  description: {
-    marginTop: 6,
-  },
-  languageRow: {
-    flexDirection: "row",
-    marginTop: 8,
-  },
-  statRow: {
-    flexDirection: "row",
-    justifyContent: "space-evenly",
-    marginTop: 8,
-  },
-  detailViewButtonRow: {
-    flexDirection: "row",
-    marginTop: 15,
-  },
-  button: {
-    flexGrow: 1,
-    paddingVertical: 6,
-    paddingHorizontal: 10,
-    backgroundColor: theme.colors.accent1,
-    color: theme.colors.foregroundInverted,
-    fontWeight: theme.fontWeights.bold,
-    borderRadius: 5,
-  },
-  deleteButton: {
-    flexGrow: 0,
-    backgroundColor: theme.colors.warning,
-  },
-  buttonText: {
-    textAlign: "center",
-    color: theme.colors.foregroundInverted,
-    fontWeight: theme.fontWeights.bold,
-  },
-  buttonSeparator: {
-    width: 10,
-  }
-});
-
 const RepositoryListItem = ({ item, showDetailViewButtons }) => {
-/*
-  const deleteButtonStyle = [
-    styles.button,
-    styles.deleteButton,
-  ];
-*/
+
   const handleOpeningInGitHub = (url) => {
     try {
       Linking.openURL(url);
@@ -81,23 +21,9 @@ const RepositoryListItem = ({ item, showDetailViewButtons }) => {
       console.log(`Opening URL "${url}" failed: ${e}`);
     }
   };
-/*
-  const handleDeletion = () => {
-    alert("Deletion");
-  };
-*/
+
   if (typeof(item) !== "object") {
-    return (
-      <View>
-        <Text style={{textAlign: "center", marginTop: 20, fontWeight: "bold"}}>
-          Missing or malformatted repository item{"\n"}
-          argument of type &quot;{typeof(item)}&quot;:
-        </Text>
-        <Text style={{textAlign: "center", marginTop: 10}}>
-          {item}
-        </Text>
-      </View>
-    );
+    return <></>;
   }
 
   return (
@@ -163,11 +89,56 @@ const RepositoryListItem = ({ item, showDetailViewButtons }) => {
   );
 };
 
-/*
-        <View style={styles.buttonSeparator} />
-        <Pressable style={deleteButtonStyle} onPress={handleDeletion}>
-          <Text style={styles.buttonText}>Delete</Text>
-        </Pressable>
-*/
-
 export default RepositoryListItem;
+
+
+const styles = StyleSheet.create({
+  masterContainer: {
+    padding: 10,
+    flexDirection: "column",
+  },
+  row: {
+    flexDirection: "row",
+  },
+  primaryInfoContainer: {
+    margin: 0,
+    paddingLeft: 10,
+    flexShrink: 1,
+  },
+  name: {
+    marginTop: -3,
+  },
+  description: {
+    marginTop: 6,
+  },
+  languageRow: {
+    flexDirection: "row",
+    marginTop: 8,
+  },
+  statRow: {
+    flexDirection: "row",
+    justifyContent: "space-evenly",
+    marginTop: 8,
+  },
+  detailViewButtonRow: {
+    flexDirection: "row",
+    marginTop: 15,
+  },
+  button: {
+    flexGrow: 1,
+    paddingVertical: 6,
+    paddingHorizontal: 10,
+    backgroundColor: theme.colors.accent1,
+    color: theme.colors.foregroundInverted,
+    fontWeight: theme.fontWeights.bold,
+    borderRadius: 5,
+  },
+  buttonText: {
+    textAlign: "center",
+    color: theme.colors.foregroundInverted,
+    fontWeight: theme.fontWeights.bold,
+  },
+  buttonSeparator: {
+    width: 10,
+  }
+});

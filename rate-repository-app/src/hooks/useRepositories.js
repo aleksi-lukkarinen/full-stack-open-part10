@@ -10,12 +10,12 @@ const useRepositories = (variables) => {
       variables,
     });
 
-  const canFetchMore = () => {
+  const canFetchMoreRepositories = () => {
     return !loading && data?.repositories.pageInfo.hasNextPage;
   };
 
-  const handleFetchMore = () => {
-    if (!canFetchMore()) {
+  const handleFetchMoreRepositories = () => {
+    if (!canFetchMoreRepositories()) {
       return;
     }
 
@@ -30,8 +30,8 @@ const useRepositories = (variables) => {
 
   return {
     repositories: data?.repositories,
-    fetchMore: handleFetchMore,
-    canFetchMore,
+    fetchMoreRepositories: handleFetchMoreRepositories,
+    canFetchMoreRepositories,
     error,
     loading,
     ...queryResult,

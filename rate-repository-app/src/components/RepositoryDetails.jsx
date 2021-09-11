@@ -9,34 +9,31 @@ import ReviewItem from "./ReviewItem";
 
 
 
-const styles = StyleSheet.create({
-  separator: {
-    height: 6,
-    backgroundColor: theme.colors.separator,
-  },
-});
-
-const ItemSeparator = () =>
-    <View style={styles.separator} />;
-
-
 const RepositoryDetails = () => {
   const params = useParams();
   const repoId = params.repoId;
-  const { repository, error, loading } =
-    useRepository(repoId);
 
-  if (loading || error || !repository) {
-    return <></>;
-  }
+  const {
+    repository,
+    fetchMoreReviews,
+  } = useRepository({
+    repoId,
+    firstNReviews: 10,
+  });
 
-  const reviewNodes = repository.reviews
-    ? repository.reviews.edges.map(edge => edge.node)
+  const onEndReached = () => {
+    fetchMoreReviews();
+  };
+
+  const reviewNodes = repository?.reviews
+    ? repository?.reviews?.edges.map(edge => edge.node)
     : [];
 
   return (
     <FlatList
       data={reviewNodes}
+      onEndReached={onEndReached}
+      onEndReachedThreshold={0.5}
       renderItem={({item}) => <ReviewItem review={item} />}
       keyExtractor={({id}) => id}
       ItemSeparatorComponent={ItemSeparator}
@@ -49,3 +46,14 @@ const RepositoryDetails = () => {
 };
 
 export default RepositoryDetails;
+
+
+const styles = StyleSheet.create({
+  separator: {
+    height: 6,
+    backgroundColor: theme.colors.separator,
+  },
+});
+
+const ItemSeparator = () =>
+    <View style={styles.separator} />;
