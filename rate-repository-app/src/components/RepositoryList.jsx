@@ -1,4 +1,4 @@
-import React, { Component, useState } from "react";
+import React, { Component, createRef, useEffect, useState } from "react";
 import { FlatList, View, StyleSheet, Pressable, ActivityIndicator } from "react-native";
 import { useHistory } from "react-router-native";
 import { Menu, IconButton, Searchbar } from "react-native-paper";
@@ -63,20 +63,27 @@ export class RepositoryListContainer extends Component {
     );
   }
 
-  listEmptyComponent = () => {
+  renderFooter = () => {
+    return !this.props.showLoadingReposFooter ? <></> :
+      <ActivityIndicator
+          size={50}
+          animating={true}
+          color={theme.colors.accent1} />;
+  }
+
+  renderEmptyComponent = () => {
     return (
       <View>
-        <Text style={styles.loadingText}>
-          {this.props.loadingRepositories
-            ? "Loading repositories..."
-            : "No repositories found."}
+        <Text style={styles.emptyListText}>
+          {this.props.showLoadingReposForEmptyList
+              ? "Loading..." : "No repositories"}
         </Text>
-
-        {!this.props.loadingRepositories ? <></>
-          : <ActivityIndicator
-                size={50}
-                animating={true}
-                color={theme.colors.accent1} /> }
+        {!this.props.showLoadingReposForEmptyList ? <></> :
+          <ActivityIndicator
+            size={80}
+            animating={true}
+            color={theme.colors.accent1} />
+        }
       </View>
     );
   }
@@ -89,9 +96,12 @@ export class RepositoryListContainer extends Component {
     return (
       <FlatList
         data={repositoryNodes}
+        onEndReached={this.props.onEndReach}
+        onEndReachedThreshold={0.8}
         ListHeaderComponent={this.renderHeader}
+        ListFooterComponent={this.renderFooter}
+        ListEmptyComponent={this.renderEmptyComponent}
         ItemSeparatorComponent={ItemSeparator}
-        ListEmptyComponent={this.listEmptyComponent}
         renderItem={({ item }) => (
           <Pressable onPress={() => this.props.handleRepoListItemPress(item.id)}>
             <RepositoryListItem
@@ -113,6 +123,7 @@ const RepositoryList = ({
 }) => {
   const history = useHistory();
 
+  const [showLoadingReposFooter, setShowLoadingReposFooter] = useState(false);
   const [sortingMenuVisible, setSortingMenuVisible] = useState(false);
 
   const handleRepoListItemPress = (repoId) => {
@@ -125,17 +136,38 @@ const RepositoryList = ({
 
   const {
     repositories,
-    loading: loadingRepositories
-  } = useRepositories(
-    searchExpression,
-    sorting.order,
-    sorting.direction,
-  );
+    fetchMore: fetchMoreRepositories,
+    canFetchMore: canFetchMoreRepositories,
+    loading,
+  } = useRepositories({
+    first: 10,
+    searchKeyword: searchExpression,
+    sortOrder: sorting.order,
+    sortDirection: sorting.direction,
+  });
+
+  const onEndReach = () => {
+    if (canFetchMoreRepositories()) {
+      setShowLoadingReposFooter(true);
+      fetchMoreRepositories();
+    }
+    else {
+      setShowLoadingReposFooter(false);
+    }
+  };
+
+  useEffect(() => {
+    if (!loading) {
+      setShowLoadingReposFooter(false);
+    }
+  }, [loading]);
 
   const container =
     <RepositoryListContainer
       repositories={repositories}
-      loadingRepositories={loadingRepositories}
+      showLoadingReposFooter={showLoadingReposFooter}
+      showLoadingReposForEmptyList={loading}
+      onEndReach={onEndReach}
       handleRepoListItemPress={handleRepoListItemPress}
       directSearchExpression={directSearchExpression}
       searchExpression={searchExpression}
@@ -165,7 +197,7 @@ const styles = StyleSheet.create({
     alignItems: "center",
     padding: 10,
   },
-  loadingText: {
+  emptyListText: {
     marginTop: 60,
     marginBottom: 30,
     textAlign: "center",

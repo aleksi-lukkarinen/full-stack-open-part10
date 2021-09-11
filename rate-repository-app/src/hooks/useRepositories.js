@@ -3,25 +3,38 @@ import { GET_REPOSITORIES } from "../graphql/queries";
 
 
 
-const useRepositories = (searchKeyword, sortOrder, sortDirection) => {
-  const { data, error, loading } =
+const useRepositories = (variables) => {
+  const { data, fetchMore, error, loading, ...queryResult } =
     useQuery(GET_REPOSITORIES, {
       fetchPolicy: "cache-and-network",
-      variables: { searchKeyword, sortOrder, sortDirection, },
+      variables,
     });
 
-  if (loading || error) {
-    return {
-      repositories: null,
-      loading,
-      error,
-    };
-  }
+  const canFetchMore = () => {
+    return !loading && data?.repositories.pageInfo.hasNextPage;
+  };
+
+  const handleFetchMore = () => {
+    if (!canFetchMore()) {
+      return;
+    }
+
+    fetchMore({
+      variables: {
+        ...variables,
+        after: data.repositories.pageInfo.endCursor,
+        first: 20,
+      }
+    });
+  };
 
   return {
-    repositories: data.repositories,
-    loading,
+    repositories: data?.repositories,
+    fetchMore: handleFetchMore,
+    canFetchMore,
     error,
+    loading,
+    ...queryResult,
   };
 };
 

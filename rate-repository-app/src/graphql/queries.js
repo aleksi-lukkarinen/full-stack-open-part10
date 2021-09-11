@@ -13,15 +13,20 @@ export const GET_AUTHORIZED_USER = gql`
 
 export const GET_REPOSITORIES = gql`
   query GetRepositories(
+      $after: String,
+      $first: Int,
       $searchKeyword: String,
       $sortOrder: AllRepositoriesOrderBy,
       $sortDirection: OrderDirection,
     ) {
     repositories(
+      after: $after,
+      first: $first,
       searchKeyword: $searchKeyword,
       orderBy: $sortOrder,
       orderDirection: $sortDirection,
     ) {
+      totalCount,
       edges {
         node {
           id,
@@ -33,7 +38,13 @@ export const GET_REPOSITORIES = gql`
           forksCount,
           reviewCount,
           ratingAverage,
-        }
+        },
+        cursor,
+      },
+      pageInfo {
+        endCursor,
+        startCursor,
+        hasNextPage,
       }
     }
   }
